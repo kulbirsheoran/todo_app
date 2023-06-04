@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/constant/color_const.dart';
+import 'package:todo_app/constant/string_constants.dart';
 import 'package:todo_app/module/todo.dart';
 import 'package:todo_app/screen/login_screen.dart';
 import 'package:todo_app/screen/todo_item.dart';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: Center(
           child: InkWell(
-            child: Text("Logout"),
+            child: Text(StringConstant.logout),
             onTap: () {
               LocalDataSaver.removeAll();
               Navigator.push(context,
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                           margin: const EdgeInsets.only(top: 50, bottom: 20),
                           child: const Text(
-                            "All ToDos",
+                          StringConstant.allToDo,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           )),
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                             child: TextField(
                               controller: todoController,
                               decoration: const InputDecoration(
-                                  hintText: "  Add A New Todo Item",
+                                  hintText: StringConstant.newAddTodo,
                                   border: InputBorder.none),
                             ),
                           ),
@@ -176,7 +177,7 @@ class _HomePageState extends State<HomePage> {
               Icons.search,
               color: tdBlack,
             ),
-            hintText: "Search",
+            hintText: StringConstant.search,
             fillColor: tdBlack),
       ),
     );
