@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constant/string_constants.dart';
-import 'package:todo_app/screen/home_page.dart';
-import 'package:todo_app/screen/signup_screen.dart';
+
 import 'package:todo_app/sharedPreference//local_data_saver.dart';
+
+import '../constant/routes_const.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -175,10 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignUp()));
+                          Navigator.pushReplacementNamed(
+                              context,Routes.signUp,
+                             );
                         }),
                   ],
                 ),
@@ -192,10 +192,9 @@ class _LoginScreenState extends State<LoginScreen> {
     String? name = await LocalDataSaver.getSaveName();
     String? password = await LocalDataSaver.getSavePassword();
     if(_nameController.text == name && _passwordController.text == password){
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const HomePage()));
+      Navigator.pushReplacementNamed(
+          context,Routes.homePage,
+         );
     }else{}
   }
 

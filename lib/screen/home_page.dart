@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/constant/color_const.dart';
 import 'package:todo_app/constant/path_constant.dart';
+import 'package:todo_app/constant/routes_const.dart';
 import 'package:todo_app/constant/string_constants.dart';
 import 'package:todo_app/module/todo.dart';
-import 'package:todo_app/screen/login_screen.dart';
+
 import 'package:todo_app/screen/todo_item.dart';
 import 'package:todo_app/sharedPreference//local_data_saver.dart';
 
@@ -34,8 +35,8 @@ class _HomePageState extends State<HomePage> {
             child: const Text(StringConstant.logoutHomePage),
             onTap: () {
               LocalDataSaver.removeAll();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+              Navigator.pushReplacementNamed(context,Routes.loginScreen
+                  );
             },
           ),
         ),

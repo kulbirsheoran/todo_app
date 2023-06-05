@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/constant/routes_const.dart';
 import 'package:todo_app/constant/string_constants.dart';
 import 'package:todo_app/screen/login_screen.dart';
 import 'package:todo_app/sharedPreference//local_data_saver.dart';
@@ -189,7 +190,7 @@ class _SignUpState extends State<SignUp> {
   Future<void> setData() async {
     await LocalDataSaver.saveName(nameController.text);
     await LocalDataSaver.savePassword(passwordController.text);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+    //Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
+    Navigator.pushReplacementNamed(context, Routes.loginScreen);
   }
 }
