@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/constant/color_const.dart';
+import 'package:todo_app/constant/path_constant.dart';
 import 'package:todo_app/constant/string_constants.dart';
 import 'package:todo_app/module/todo.dart';
 import 'package:todo_app/screen/login_screen.dart';
 import 'package:todo_app/screen/todo_item.dart';
-import 'package:todo_app/sharedpre/local_data_saver.dart';
+import 'package:todo_app/sharedPreference//local_data_saver.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,11 +31,11 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: Center(
           child: InkWell(
-            child: Text(StringConstant.logout),
+            child: const Text(StringConstant.logoutHomePage),
             onTap: () {
               LocalDataSaver.removeAll();
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
             },
           ),
         ),
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                           margin: const EdgeInsets.only(top: 50, bottom: 20),
                           child: const Text(
-                          StringConstant.allToDo,
+                          StringConstant.allToDoTextHomePage,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           )),
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                             child: TextField(
                               controller: todoController,
                               decoration: const InputDecoration(
-                                  hintText: StringConstant.newAddTodo,
+                                  hintText: StringConstant.newAddTodoHomePage,
                                   border: InputBorder.none),
                             ),
                           ),
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                           addToDoItem(todoController.text);
                         },
                         child: const Text(
-                          "+",
+                          StringConstant.addIconHomePage,
                           style: TextStyle(color: Colors.white, fontSize: 40),
                         ),
                       )),
@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> {
               Icons.search,
               color: tdBlack,
             ),
-            hintText: StringConstant.search,
+            hintText: StringConstant.searchHintTextHomePage,
             fillColor: tdBlack),
       ),
     );
@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: Image.asset(
-                  "assets/images/img.png",
+                  PathConstant.imageAppBarHomePage,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -207,10 +207,4 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 }
-/*InkWell(onTap: (){LocalDataSaver.removeAll();
-              Navigator.push(context , MaterialPageRoute(builder: (context)=>const LoginScreen()));
-            },
-              child: Drawer(
-                child: Text("hii"),
-              )
-           ),*/
+

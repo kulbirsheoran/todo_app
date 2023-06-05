@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:todo_app/screen/home_page.dart';
-import 'package:todo_app/sharedpre/local_data_saver.dart';
+import 'package:todo_app/sharedPreference//local_data_saver.dart';
 import 'login_screen.dart';
 
 class SplashPage extends StatefulWidget {

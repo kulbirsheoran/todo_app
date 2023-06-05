@@ -9,7 +9,7 @@ class ToDo{
  // get todoText => null;
 
    static List<ToDo>  todoList() {
-  return [ToDo(id: '1', todoText: "Morning Excercise", isDone: true,),
+  return [ToDo(id: '1', todoText: "Morning Exercise", isDone: true,),
     ToDo(id: '2', todoText: "Buy Groceries", isDone: true,),
   ];
 }

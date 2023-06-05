@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/constant/string_constants.dart';
 import 'package:todo_app/screen/login_screen.dart';
-import 'package:todo_app/sharedpre/local_data_saver.dart';
+import 'package:todo_app/sharedPreference//local_data_saver.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -37,14 +38,14 @@ class _SignUpState extends State<SignUp> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "please fill name";
+                            return StringConstant.validatorInputNameSignIpScreen;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25)),
-                            hintText: 'Name',
+                            hintText: StringConstant.nameHintTextSignUpScreen,
                             fillColor: Colors.white,
                             filled: true,
                             labelStyle: const TextStyle(color: Colors.white),
@@ -63,7 +64,7 @@ class _SignUpState extends State<SignUp> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "please fill Email";
+                            return StringConstant.validatorInputEmailSignUpScreen;
                           }
                           return null;
                         },
@@ -71,7 +72,7 @@ class _SignUpState extends State<SignUp> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
                             ),
-                            hintText: 'Email',
+                            hintText: StringConstant.emailHintTextSignIpScreen,
                             fillColor: Colors.white,
                             filled: true,
                             labelStyle: const TextStyle(color: Colors.green),
@@ -90,14 +91,14 @@ class _SignUpState extends State<SignUp> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "please fill Password";
+                            return StringConstant.validatorInputPasswordSignUpScreen;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25)),
-                            hintText: 'Password',
+                            hintText: StringConstant.passwordHintTextSignIpScreen,
                             fillColor: Colors.white,
                             filled: true,
                             labelStyle: const TextStyle(color: Colors.green),
@@ -116,14 +117,14 @@ class _SignUpState extends State<SignUp> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "please Confirm password";
+                            return StringConstant.validatorInputConfirmPasswordSignUpScreen;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25)),
-                            hintText: 'Confirm Password',
+                            hintText: StringConstant.confirmPasswordHintTextSignIpScreen,
                             fillColor: Colors.white,
                             filled: true,
                             labelStyle: const TextStyle(color: Colors.green),
@@ -152,7 +153,7 @@ class _SignUpState extends State<SignUp> {
                           child: Center(
                               child: InkWell(
                                   child: const Text(
-                                    "SignUp",
+                                    StringConstant.signUpButtonSignUpScreen,
                                   ),
                                   onTap: () {
                                     if (_formKey.currentState!.validate()) {
@@ -166,7 +167,7 @@ class _SignUpState extends State<SignUp> {
                           child: const Padding(
                             padding: EdgeInsets.only(top: 16.0),
                             child: Text(
-                              "Already have an account? Sign In",
+                              StringConstant.signInSignUpScreen,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),

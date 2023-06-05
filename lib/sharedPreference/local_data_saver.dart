@@ -1,10 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_app/constant/string_constants.dart';
 
 class LocalDataSaver {
-  static String name = '';
-  static String email='email';
-  static String password = 'password';
-  static String confirmPassword='confirmPassword';
+  static String name = StringConstant.nameLocalDataSaver;
+  static String email=StringConstant.emailLocalDataSaver;
+  static String password = StringConstant.passwordLocalDataSaver;
+  static String confirmPassword=StringConstant.confirmPasswordLocalDataSaver;
 
 
 //These lines define two static variables name and password, which are used as keys to identify the data stored in the shared preferences.
@@ -46,7 +47,7 @@ class LocalDataSaver {
     return  preferences.getString(confirmPassword);
   }
 
-   static removeAll() async {
+   static  Future<void> removeAll() async {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.remove(name);
       await preferences.remove(password);

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/constant/string_constants.dart';
 import 'package:todo_app/screen/home_page.dart';
 import 'package:todo_app/screen/signup_screen.dart';
-import 'package:todo_app/sharedpre/local_data_saver.dart';
+import 'package:todo_app/sharedPreference//local_data_saver.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 200,
                       child: const Center(
                           child: Text(
-                            "Sign In",
+                            StringConstant.signIn,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 30,
@@ -52,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Container(
                           alignment: Alignment.topLeft,
                           child: const Text(
-                            "Name",
+                            StringConstant.nameLogInScreen,
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -63,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please input name";
+                            return StringConstant.validatorInputNameLogInScreen;
                           }
                           return null;
                         },
@@ -72,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(20)
                             ),
 
-                            hintText: "Name",
+                            hintText: StringConstant.nameHintTextLogInScreen,
                             fillColor: Colors.white,
                             filled: true,
 
@@ -89,19 +90,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Padding(
                       padding: EdgeInsets.only(right: 260.0),
                       child: Text(
-                        "Password",
+                        StringConstant.passwordLogInScreen,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: TextFormField(
-                        // focusNode: nameFocus,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please input password";
+                            return StringConstant.validatorInputPasswordLogInScreen;
                           } else if (value.length < 8) {
-                            return 'required 8 digit';
+                            return StringConstant.validatorInputConditionLogInScreen;
                           }
                           return null;
                         },
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20)
                             ),
-                            hintText: "Password",
+                            hintText: StringConstant.passwordHintTextLogInScreen,
                             fillColor: Colors.white,
                             filled: true,
 
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextButton(
                               onPressed: () {},
                               child: const Text(
-                                "forgot password?",
+                                StringConstant.forgotPasswordLogInScreen,
                                 style: TextStyle(color: Colors.white,),
                               )),
                         ],
@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: InkWell(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
-                            //signup();
+
                             loginOpen();
                           }
                         },
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.circular(40)),
                           child: const Center(
                               child: Text(
-                                "Login",
+                               StringConstant.signIn,
                               )),
                         ),
                       ),
@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 16.0),
                           child: Text(
-                            "Don't have an account? Sign Up",
+                            StringConstant.signUpLogInScreen,
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  void loginOpen()async{
+  Future<void> loginOpen()async{
     String? name = await LocalDataSaver.getSaveName();
     String? password = await LocalDataSaver.getSavePassword();
     if(_nameController.text == name && _passwordController.text == password){
