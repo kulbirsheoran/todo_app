@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void navigateToNextPage() {
-    Timer(const Duration(seconds: 2), () async {
+    Timer(const Duration(microseconds: 200), () async {
       String? name = await LocalDataSaver.getSaveName();
       String? password = await LocalDataSaver.getSavePassword();
       if (name != null && password != null) {
@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
       } else {
         //  LoginScreen();
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
       }
     });
   }
@@ -41,7 +41,9 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            color: Colors.white,
-            child: FlutterLogo(size: MediaQuery.of(context).size.height)));
+            color: Colors.greenAccent,
+            child: const Center(child: Text('Loading...',style: TextStyle(
+              fontWeight: FontWeight.w400,color: Colors.white
+            ),),)));
   }
 }

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/constant/color_const.dart';
 import 'package:todo_app/constant/path_constant.dart';
 import 'package:todo_app/constant/routes_const.dart';
 import 'package:todo_app/constant/string_constants.dart';
 import 'package:todo_app/module/todo.dart';
+import 'package:todo_app/provider/todo_provider.dart';
 
 import 'package:todo_app/screen/todo_item.dart';
-import 'package:todo_app/sharedPreference//local_data_saver.dart';
+import 'package:todo_app/service/todo_db_service.dart';
+import 'package:todo_app/widget/search_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,112 +19,129 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final todosList = ToDo.todoList();
-  List<ToDo> foundTodo = [];
   final todoController = TextEditingController();
+  late ToDoProvider toDoProvider;
 
   @override
   void initState() {
-    foundTodo = todosList;
+    toDoProvider = ToDoProvider(ToDoDatabase.instance);
+    fetchTodo();
     super.initState();
+  }
+
+  fetchTodo() async {
+    try {
+       await toDoProvider.loadTodos();
+      setState(() {});
+    } catch (e) {
+      print('$e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(
-        child: Center(
-          child: InkWell(
-            child: const Text(StringConstant.logoutHomePage),
-            onTap: () {
-              LocalDataSaver.removeAll();
-              Navigator.pushReplacementNamed(context,Routes.loginScreen
-                  );
-            },
+    return ChangeNotifierProvider<ToDoProvider>(
+      create: (context) => toDoProvider,
+      child: Scaffold(
+        drawer: Drawer(
+          child: Center(
+            child: InkWell(
+              child: const Text(StringConstant.logoutHomePage),
+              onTap: () {
+                toDoProvider.deleteAll();
+                Navigator.pushReplacementNamed(context, Routes.loginScreen);
+              },
+            ),
           ),
         ),
-      ),
-      backgroundColor: Colors.greenAccent,
-      appBar: buildAppBar(),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Column(
+        backgroundColor: Colors.greenAccent,
+        appBar: buildAppBar(),
+        body: Consumer<ToDoProvider>(
+          builder: (context,provider,child){
+            return Stack(
               children: [
-                searchBox(),
-                Expanded(
-                  child: ListView(
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  child: Column(
                     children: [
-                      Container(
-                          margin: const EdgeInsets.only(top: 50, bottom: 20),
-                          child: const Text(
-                          StringConstant.allToDoTextHomePage,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          )),
-                      for (ToDo todos in foundTodo.reversed)
-                        ToDoItem(
-                          toDo: todos,
-                          onToDoChanged: handleToDoChange,
-                          onDeleteItem: deleteToDoItem,
+                      SearchWidget((value){
+                        runFilter(value);
+                      }),
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            Container(
+                                margin: const EdgeInsets.only(top: 50, bottom: 20),
+                                child: const Text(
+                                  StringConstant.allToDoTextHomePage,
+                                  style: TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.bold),
+                                )),
+                            for (ToDo todos in provider.foundToDos.reversed)
+                              ToDoItem(
+                                toDo: todos,
+                                onToDoChanged: handleToDoChange,
+                                onDeleteItem: deleteToDoItem,
+                              ),
+                          ],
                         ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          blurRadius: 10.0,
+                                          offset: Offset(0.0, 0.0),
+                                          color: tdGrey),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: TextField(
+                                    controller: todoController,
+                                    decoration: const InputDecoration(
+                                        hintText: StringConstant.newAddTodoHomePage,
+                                        border: InputBorder.none),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                                child: InkWell(
+                                  onTap: () {
+                                    addToDoItem(todoController.text);
+                                  },
+                                  child: const Text(
+                                    StringConstant.addIconHomePage,
+                                    style: TextStyle(color: Colors.white, fontSize: 40),
+                                  ),
+                                )),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              boxShadow: const [
-                                BoxShadow(
-                                    blurRadius: 10.0,
-                                    offset: Offset(0.0, 0.0),
-                                    color: tdGrey),
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(25)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: TextField(
-                              controller: todoController,
-                              decoration: const InputDecoration(
-                                  hintText: StringConstant.newAddTodoHomePage,
-                                  border: InputBorder.none),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.cyan,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                          child: InkWell(
-                        onTap: () {
-                          addToDoItem(todoController.text);
-                        },
-                        child: const Text(
-                          StringConstant.addIconHomePage,
-                          style: TextStyle(color: Colors.white, fontSize: 40),
-                        ),
-                      )),
-                    )
-                  ],
-                )
               ],
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -133,16 +153,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   void deleteToDoItem(String id) {
-    setState(() {
-      todosList.removeWhere((item) => item.id == id);
-    });
+    toDoProvider.deleteTodo(id);
   }
 
-  void addToDoItem(String toDO) {
+  void addToDoItem(String data) {
     setState(() {
-      todosList.add(ToDo(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          todoText: toDO));
+      ToDo toDo = ToDo(
+          id: DateTime.now().millisecondsSinceEpoch.toString(), todoText: data);
+      toDoProvider.addTodo(toDo);
+      print('');
     });
     todoController.clear();
   }
@@ -150,39 +169,39 @@ class _HomePageState extends State<HomePage> {
   void runFilter(String enteredKeyword) {
     List<ToDo> results = [];
     if (enteredKeyword.isEmpty) {
-      results = todosList;
+      results = toDoProvider.todos;
     } else {
-      results = todosList
-          .where((item) => item.todoText!
+      results = toDoProvider.todos
+          .where((item) => item.todoText
               .toLowerCase()
               .contains(enteredKeyword.toLowerCase()))
           .toList();
     }
     setState(() {
-      foundTodo = results;
+      toDoProvider.foundToDos = results;
     });
   }
-
-  Widget searchBox() {
-    return Container(
-      //padding: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
-      child: TextField(
-        onChanged: (value) => runFilter(value),
-        decoration: const InputDecoration(
-            border: InputBorder.none,
-            //contentPadding: EdgeInsets.all(0),
-
-            prefixIcon: Icon(
-              Icons.search,
-              color: tdBlack,
-            ),
-            hintText: StringConstant.searchHintTextHomePage,
-            fillColor: tdBlack),
-      ),
-    );
-  }
+  //
+  // Widget searchBox() {
+  //   return Container(
+  //     //padding: const EdgeInsets.symmetric(horizontal: 15),
+  //     decoration: BoxDecoration(
+  //         color: Colors.white, borderRadius: BorderRadius.circular(20)),
+  //     child: TextField(
+  //       onChanged: (value) => runFilter(value),
+  //       decoration: const InputDecoration(
+  //           border: InputBorder.none,
+  //           //contentPadding: EdgeInsets.all(0),
+  //
+  //           prefixIcon: Icon(
+  //             Icons.search,
+  //             color: tdBlack,
+  //           ),
+  //           hintText: StringConstant.searchHintTextHomePage,
+  //           fillColor: tdBlack),
+  //     ),
+  //   );
+  // }
 
   AppBar buildAppBar() {
     return AppBar(
@@ -208,4 +227,3 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 }
-

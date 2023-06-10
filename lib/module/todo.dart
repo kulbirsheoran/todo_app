@@ -1,16 +1,40 @@
-class ToDo{
-  String? id;
-  String? todoText;
+class ToDo {
+  String id;
+  String todoText;
   bool isDone;
 
+  ToDo({
+    required this.id,
+    required this.todoText,
+    this.isDone = false,
+  });
 
-  ToDo({required this.id,required this.todoText,this.isDone=false,});
 
- // get todoText => null;
+  ToDo copy({
+    String? id,
+    String? todoText,
+    bool? isDone,
+  }) {
+    return ToDo(
+      id: id ?? this.id,
+      todoText: todoText ?? this.todoText,
+      isDone: isDone ?? this.isDone,
+    );
+  }
 
-   static List<ToDo>  todoList() {
-  return [ToDo(id: '1', todoText: "Morning Exercise", isDone: true,),
-    ToDo(id: '2', todoText: "Buy Groceries", isDone: true,),
-  ];
-}
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'todoText': todoText,
+      'isDone': isDone,
+    };
+  }
+
+  factory ToDo.fromJson(Map<String, dynamic> json) {
+    return ToDo(
+      id: json['id'],
+      todoText: json['todoText'],
+      isDone: json['isDone'] == 1?true:false,
+    );
+  }
 }
