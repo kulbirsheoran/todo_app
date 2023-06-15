@@ -13,8 +13,24 @@ class ToDoProvider extends ChangeNotifier {
 
   Future<void> loadTodos() async {
     _todos = await database.readAll();
-    foundToDos = todos;
+    filterByDone(_todos);
+    foundToDos = _todos;
     notifyListeners();
+  }
+
+  void filterByDone(List<ToDo> todoList) {
+    List<ToDo> doneList = [];
+    List<ToDo> undoList = [];
+    for (var element in todoList) {
+      if (element.isDone) {
+        doneList.add(element);
+      } else {
+        undoList.add(element);
+      }
+    }
+    todoList.clear();
+    todoList.addAll(doneList);
+    todoList.addAll(undoList);
   }
 
   Future<void> addTodo(ToDo todo) async {
@@ -30,6 +46,12 @@ class ToDoProvider extends ChangeNotifier {
       _todos[index] = todo;
       notifyListeners();
     }
+  }
+
+  Future onToDoStatusChange(ToDo todo)async{
+    await updateTodo(todo);
+    filterByDone(_todos);
+    notifyListeners();
   }
 
   Future<void> deleteTodo(String id) async {
