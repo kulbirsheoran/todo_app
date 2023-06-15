@@ -33,7 +33,7 @@ class ToDoItem extends StatelessWidget {
             color: Colors.green,
           ),
           title: Text(
-            toDo.todoText!,
+            toDo.todoText,
             style: TextStyle(
               fontSize: 16,
               color: tdBlack,
