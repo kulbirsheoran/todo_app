@@ -38,6 +38,7 @@ class _SearchWidgetState extends State<SearchWidget> {
     setState(() {
       _searchController.clear();
       _showClearButton = false;
+      widget.onChange('');
     });
   }
 
@@ -48,12 +49,18 @@ class _SearchWidgetState extends State<SearchWidget> {
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(20)),
       child: TextField(
-        controller: _searchController,
+        controller: _searchController,style: const TextStyle(fontSize: 18 ),
         onChanged: (value) {
           widget.onChange(value);
         },
         decoration: InputDecoration(
           border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          contentPadding:
+          const EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
           prefixIcon: const Icon(
             Icons.search,
             color: tdBlack,
@@ -67,8 +74,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             onPressed: _clearSearch,
           )
               : null,
-          hintText: StringConstant.searchHintTextHomePage,
-          fillColor: tdBlack,
+
         ),
       ),
     );
