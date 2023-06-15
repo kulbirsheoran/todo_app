@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   fetchTodo() async {
     try {
-       await toDoProvider.loadTodos();
+      await toDoProvider.loadTodos();
       setState(() {});
     } catch (e) {
       print('$e');
@@ -105,9 +105,18 @@ class _HomePageState extends State<HomePage> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: TextField(
                                     controller: todoController,
+                                    style: const TextStyle(fontSize: 18),
                                     decoration: const InputDecoration(
-                                        hintText: StringConstant.newAddTodoHomePage,
-                                        border: InputBorder.none),
+                                      hintText:
+                                          StringConstant.newAddTodoHomePage,
+                                      contentPadding: EdgeInsets.only(
+                                          left: 15,
+                                          bottom: 11,
+                                          top: 11,
+                                          right: 15),
+                                      border: InputBorder.none,
+
+                                    ),
                                   ),
                                 ),
                               ),
@@ -124,14 +133,17 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: Center(
                                 child: InkWell(
-                                  onTap: () {
-                                    addToDoItem(todoController.text);
-                                  },
-                                  child: const Text(
-                                    StringConstant.addIconHomePage,
-                                    style: TextStyle(color: Colors.white, fontSize: 40),
-                                  ),
-                                )),
+                              onTap: () {
+                                if(todoController.text.isNotEmpty) {
+                                  addToDoItem(todoController.text);
+                                }
+                              },
+                              child: const Text(
+                                StringConstant.addIconHomePage,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 40),
+                              ),
+                            )),
                           )
                         ],
                       )
@@ -150,6 +162,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       todo.isDone = !todo.isDone;
     });
+    toDoProvider.onToDoStatusChange(todo);
   }
 
   void deleteToDoItem(String id) {
@@ -181,6 +194,7 @@ class _HomePageState extends State<HomePage> {
       toDoProvider.foundToDos = results;
     });
   }
+
   //
   // Widget searchBox() {
   //   return Container(
